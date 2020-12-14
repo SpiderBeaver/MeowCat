@@ -6,7 +6,7 @@
   "password": "example",
   "database": "meowcat",
   "entities": [
-    "src/entity/*.js"
+    "dist/entity/*.js"
   ],
   "logging": true,
   "synchronize": true
