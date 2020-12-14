@@ -1,11 +1,18 @@
 import express from 'express';
+import { createConnection } from 'typeorm';
 
 const app = express();
 
-app.get('/test', (req, res) => {
-  res.send("You're good");
-});
+const main = async () => {
+  const connection = await createConnection();
 
-app.listen(8000, () => {
-  console.log('Server started');
-});
+  app.get('/test', (req, res) => {
+    res.send("You're good");
+  });
+
+  app.listen(8000, () => {
+    console.log('Server started');
+  });
+};
+
+main();
