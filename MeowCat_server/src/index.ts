@@ -1,10 +1,13 @@
 import express from 'express';
+import cors from 'cors';
 import { createConnection, DeepPartial } from 'typeorm';
 import Post from './entity/Post';
 import User from './entity/User';
 
 const app = express();
 app.use(express.json());
+const corsMiddleware = cors();
+app.use(corsMiddleware);
 
 const main = async () => {
   const connection = await createConnection();
