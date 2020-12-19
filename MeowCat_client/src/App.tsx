@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Post from './domain/Post';
 import Header from './components/Header';
 import PostsList from './components/PostsList';
 import Container from './components/Container';
+import LoginPage from './components/LoginPage';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -20,9 +22,18 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Container>
-        <PostsList posts={posts} />
-      </Container>
+      <Router>
+        <Switch>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/">
+            <Container>
+              <PostsList posts={posts} />
+            </Container>
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
