@@ -1,3 +1,7 @@
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
@@ -5,4 +9,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #040926;
   color: #ffffff;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
 }

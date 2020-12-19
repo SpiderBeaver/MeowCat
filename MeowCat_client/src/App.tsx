@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import Post from './domain/Post';
 import Header from './components/Header';
+import PostsList from './components/PostsList';
+import Container from './components/Container';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -19,12 +21,9 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <header>hi1</header>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>{post.text}</li>
-        ))}
-      </ul>
+      <Container>
+        <PostsList posts={posts} />
+      </Container>
     </div>
   );
 }
