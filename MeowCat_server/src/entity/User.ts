@@ -9,6 +9,10 @@ export default class User {
   @Column()
   username!: string;
 
+  //TODO: Salt passwords
+  @Column()
+  password!: string;
+
   @OneToMany(() => Post, (post) => post.user)
   posts!: Post[];
 }
