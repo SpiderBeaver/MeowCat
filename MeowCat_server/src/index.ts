@@ -31,6 +31,12 @@ const main = async () => {
   });
 
   app.get('/posts', async (req, res) => {
+    const postsRepository = connection.getRepository(Post);
+    const posts = await postsRepository.find();
+    res.json(posts);
+  });
+
+  app.post('/posts', async (req, res) => {
     try {
       const token = req.headers.authorization?.split(' ')[1];
       const decodedJwt = jwt.verify(token!, process.env.JWT_SECRET!);
@@ -39,12 +45,6 @@ const main = async () => {
       return res.status(401).send();
     }
 
-    const postsRepository = connection.getRepository(Post);
-    const posts = await postsRepository.find();
-    res.json(posts);
-  });
-
-  app.post('/posts', async (req, res) => {
     try {
       const postsRepository = connection.getRepository(Post);
       const newPost = postsRepository.create(req.body);
