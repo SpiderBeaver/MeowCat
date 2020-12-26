@@ -21,8 +21,8 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
       <Router>
+        <Header />
         <Switch>
           <Route path="/login">
             <LoginPage />
