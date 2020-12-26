@@ -54,9 +54,13 @@ const main = async () => {
     const user = await usersRepository.findOne({ where: { username: username, password: password } });
     if (user) {
       const token = jwt.sign({ username: username }, process.env.JWT_SECRET!);
-      res.send(token);
+      res.send({
+        token: token,
+      });
     } else {
-      res.status(401).send('Incorrect credentials.');
+      res.status(401).send({
+        error: 'Incorrect credentials.',
+      });
     }
   });
 
