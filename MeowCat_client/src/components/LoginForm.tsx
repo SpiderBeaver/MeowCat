@@ -1,7 +1,12 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import UserContext from '../context/UserContext';
 import styles from './LoginForm.module.css';
 
 export default function LoginForm() {
+  const userContext = useContext(UserContext);
+  const history = useHistory();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,8 +24,8 @@ export default function LoginForm() {
       }),
     });
     if (response.status === 200) {
-      const responseData = await response.json();
-      console.log(responseData);
+      userContext.login(username);
+      history.push('/');
     } else {
       console.log('Errror');
     }
