@@ -31,6 +31,14 @@ const main = async () => {
   });
 
   app.get('/posts', async (req, res) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      const decodedJwt = jwt.verify(token!, process.env.JWT_SECRET!);
+      // TODO: Check username
+    } catch (e) {
+      return res.status(401).send();
+    }
+
     const postsRepository = connection.getRepository(Post);
     const posts = await postsRepository.find();
     res.json(posts);
