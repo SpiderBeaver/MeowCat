@@ -1,10 +1,24 @@
 .header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .logo {
   color: #c97b84;
   font-size: 2.25rem;
+  text-decoration: none;
+}
+
+.user_info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user_info a {
+  color: inherit;
   text-decoration: none;
 }

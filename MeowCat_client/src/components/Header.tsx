@@ -11,7 +11,9 @@ export default function Header() {
       <Link to="/" className={styles.logo}>
         MeowCat
       </Link>
-      {user.username != null ? <span>Hi is user {user.username}</span> : <span>no syser sorry</span>}
+      <div className={styles.user_info}>
+        {user.username != null ? <span>Hi is user {user.username}</span> : <Link to="/login">Login</Link>}
+      </div>
     </header>
   );
 }
