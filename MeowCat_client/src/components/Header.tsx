@@ -1,7 +1,8 @@
-import { useContext } from 'react';
+import { Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import styles from './Header.module.css';
+import LogoutButton from './LogoutButton';
 
 export default function Header() {
   const user = useContext(UserContext);
@@ -12,7 +13,14 @@ export default function Header() {
         MeowCat
       </Link>
       <div className={styles.user_info}>
-        {user.username != null ? <span>Hi is user {user.username}</span> : <Link to="/login">Login</Link>}
+        {user.username != null ? (
+          <Fragment>
+            <span className={styles.username}>@{user.username}</span>
+            <LogoutButton />
+          </Fragment>
+        ) : (
+          <Link to="/login">Login</Link>
+        )}
       </div>
     </header>
   );
