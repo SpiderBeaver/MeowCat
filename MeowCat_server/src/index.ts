@@ -17,6 +17,25 @@ dotenv.config();
 const main = async () => {
   const connection = await createConnection();
 
+  app.get('/me', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    // TODO: Create a type for jwt data.
+    // TODO: Handle errors
+    const decodedJwt = <any>(jwt.verify(token!, process.env.JWT_SECRET!));
+    const userId = decodedJwt.userId;
+    const userRepository = connection.getRepository(User);
+    const user = await userRepository.findOne(userId);    
+    if (user == undefined) {
+      return res.send({
+        error: "Incorrect token"
+      })
+    }
+    res.send({
+      id: user.id,
+      username: user.username
+    });
+  });
+
   app.get('/users', async (req, res) => {
     const userRepository = connection.getRepository(User);
     const users = await userRepository.find();
@@ -61,7 +80,7 @@ const main = async () => {
     const usersRepository = connection.getRepository(User);
     const user = await usersRepository.findOne({ where: { username: username, password: password } });
     if (user) {
-      const token = jwt.sign({ username: username }, process.env.JWT_SECRET!);
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
       res.send({
         token: token,
       });

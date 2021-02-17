@@ -13,6 +13,23 @@ function App() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
+    const fetchMe = async () => {
+      const jwt = localStorage.getItem('jwt');
+      if (jwt == null) {
+        return;
+      }
+      const response = await fetch('http://localhost:8000/me', {
+        headers: new Headers({
+          Authorization: `Bearer ${jwt}`,
+        }),
+      });
+      const data = await response.json();
+      setUsername(data.username);
+    };
+    fetchMe();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       const response = await fetch('http://localhost:8000/posts');
       const data = await response.json();

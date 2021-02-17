@@ -24,6 +24,8 @@ export default function LoginForm() {
       }),
     });
     if (response.status === 200) {
+      const data = await response.json();
+      localStorage.setItem('jwt', data.token);
       userContext.login(username);
       history.push('/');
     } else {
