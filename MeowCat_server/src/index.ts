@@ -21,19 +21,32 @@ const main = async () => {
     const token = req.headers.authorization?.split(' ')[1];
     // TODO: Create a type for jwt data.
     // TODO: Handle errors
-    const decodedJwt = <any>(jwt.verify(token!, process.env.JWT_SECRET!));
+    const decodedJwt = <any>jwt.verify(token!, process.env.JWT_SECRET!);
     const userId = decodedJwt.userId;
     const userRepository = connection.getRepository(User);
-    const user = await userRepository.findOne(userId);    
+    const user = await userRepository.findOne(userId);
     if (user == undefined) {
       return res.send({
-        error: "Incorrect token"
-      })
+        error: 'Incorrect token',
+      });
     }
     res.send({
       id: user.id,
-      username: user.username
+      username: user.username,
     });
+  });
+
+  app.post('/signup', async (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    // TODO: Check if user already exisits
+    // TODO: Validate input
+    // TODO: Catch exceptions
+    const userRepository = connection.getRepository(User);
+    const newUserData = userRepository.create({ username: username, password: password });
+    const newUser = await userRepository.save(newUserData);
+    const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET!);
+    res.send({ token: token });
   });
 
   app.get('/users', async (req, res) => {
@@ -63,7 +76,7 @@ const main = async () => {
       const newPostText = req.body.text;
 
       const postsRepository = connection.getRepository(Post);
-      const newPost = postsRepository.create({ text: newPostText, user: { id: userId }});
+      const newPost = postsRepository.create({ text: newPostText, user: { id: userId } });
       const result = await postsRepository.save(newPost);
       res.send(result);
     } catch (e) {

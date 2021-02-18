@@ -1,19 +1,19 @@
 import React, { FormEvent, useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import UserContext from '../context/UserContext';
-import styles from './LoginForm.module.css';
+import styles from './SignupForm.module.css';
 
-export default function LoginForm() {
-  const userContext = useContext(UserContext);
-  const history = useHistory();
-
+export default function SignupForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleSubmit(event: FormEvent) {
+  const userContext = useContext(UserContext);
+  const history = useHistory();
+
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    const response = await fetch('http://localhost:8000/login', {
+    const response = await fetch('http://localhost:8000/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export default function LoginForm() {
     } else {
       console.log('Errror');
     }
-  }
+  };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -50,10 +50,10 @@ export default function LoginForm() {
         onChange={(event) => setPassword(event.target.value)}
       ></input>
       <div className={styles.controls}>
-        <Link to="/signup" className={styles.link}>
-          Create account
+        <Link to="/login" className={styles.link}>
+          I already have an account
         </Link>
-        <input type="submit" value="Login" className={styles.submit}></input>
+        <input type="submit" value="Sign Up" className={styles.submit}></input>
       </div>
     </form>
   );

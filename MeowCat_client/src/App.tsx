@@ -8,6 +8,7 @@ import PostsList from './components/PostsList';
 import Container from './components/Container';
 import LoginPage from './components/LoginPage';
 import NewPost from './components/NewPost';
+import SignupPage from './components/SignupPage';
 
 function App() {
   const [username, setUsername] = useState<string | null>(null);
@@ -55,6 +56,9 @@ function App() {
         <Router>
           <Header />
           <Switch>
+            <Route path="/signup">
+              <SignupPage />
+            </Route>
             <Route path="/login">
               <LoginPage />
             </Route>
