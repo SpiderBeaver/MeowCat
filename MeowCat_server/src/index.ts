@@ -58,20 +58,16 @@ const main = async () => {
   app.post('/posts', async (req, res) => {
     try {
       const token = req.headers.authorization?.split(' ')[1];
-      const decodedJwt = jwt.verify(token!, process.env.JWT_SECRET!);
-      // TODO: Check username
-    } catch (e) {
-      return res.status(401).send();
-    }
+      const tokenData = <any>jwt.verify(token!, process.env.JWT_SECRET!);
+      const userId = tokenData.userId;
+      const newPostText = req.body.text;
 
-    try {
       const postsRepository = connection.getRepository(Post);
-      const newPost = postsRepository.create(req.body);
+      const newPost = postsRepository.create({ text: newPostText, user: { id: userId }});
       const result = await postsRepository.save(newPost);
       res.send(result);
     } catch (e) {
-      // TODO: Should not send the exception. It has too many implementation details.
-      res.status(400).send(e);
+      return res.status(400).send();
     }
   });
 

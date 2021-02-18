@@ -7,6 +7,7 @@ import Header from './components/Header';
 import PostsList from './components/PostsList';
 import Container from './components/Container';
 import LoginPage from './components/LoginPage';
+import NewPost from './components/NewPost';
 
 function App() {
   const [username, setUsername] = useState<string | null>(null);
@@ -59,6 +60,7 @@ function App() {
             </Route>
             <Route path="/">
               <Container>
+                {username != null ? <NewPost /> : ''}
                 <PostsList posts={posts} />
               </Container>
             </Route>
