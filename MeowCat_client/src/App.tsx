@@ -9,6 +9,7 @@ import Container from './components/Container';
 import LoginPage from './components/LoginPage';
 import NewPost from './components/NewPost';
 import SignupPage from './components/SignupPage';
+import api from './api';
 
 function App() {
   const [username, setUsername] = useState<string | null>(null);
@@ -20,22 +21,16 @@ function App() {
       if (jwt == null) {
         return;
       }
-      const response = await fetch('http://localhost:8000/me', {
-        headers: new Headers({
-          Authorization: `Bearer ${jwt}`,
-        }),
-      });
-      const data = await response.json();
-      setUsername(data.username);
+      const meData = await api.getMe(jwt);
+      setUsername(meData.username);
     };
     fetchMe();
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://localhost:8000/posts');
-      const data = await response.json();
-      setPosts(data);
+      const posts = await api.getPosts();
+      setPosts(posts);
     };
     fetchData();
   }, []);

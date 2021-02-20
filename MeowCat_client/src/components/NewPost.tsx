@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../api';
 import styles from './NewPost.module.css';
 
 export default function NewPost() {
@@ -7,21 +8,16 @@ export default function NewPost() {
   const handleNewPostButton = async () => {
     // TODO: Validation
     const jwt = localStorage.getItem('jwt');
-    const response = await fetch('http://localhost:8000/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      },
-      body: JSON.stringify({
-        text: newPostText,
-      }),
-    });
-    if (response.status === 200) {
-      console.log('Post created successfully!');
+    if (jwt == null) {
+      console.error('No token in local storage.');
+      return;
+    }
+
+    try {
+      await api.addPost(jwt, newPostText);
       setNewPostText('');
-    } else {
-      console.log('Errror');
+    } catch (e) {
+      console.error('Error creating new post.');
     }
   };
 

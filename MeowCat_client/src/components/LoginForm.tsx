@@ -1,5 +1,6 @@
 import React, { FormEvent, useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import api from '../api';
 import UserContext from '../context/UserContext';
 import styles from './LoginForm.module.css';
 
@@ -13,23 +14,13 @@ export default function LoginForm() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    const response = await fetch('http://localhost:8000/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    });
-    if (response.status === 200) {
-      const data = await response.json();
-      localStorage.setItem('jwt', data.token);
+    try {
+      const jwt = await api.login(username, password);
+      localStorage.setItem('jwt', jwt);
       userContext.login(username);
       history.push('/');
-    } else {
-      console.log('Errror');
+    } catch (e) {
+      console.log('Error logging in.');
     }
   }
 
