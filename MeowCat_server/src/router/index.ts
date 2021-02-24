@@ -9,6 +9,7 @@ router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 
 router.get('/me', usersController.getMe);
+router.get('/user', usersController.getUser);
 router.get('/users', usersController.getUsers);
 
 router.get('/posts', postsController.getPosts);

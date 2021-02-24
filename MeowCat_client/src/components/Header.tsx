@@ -16,6 +16,7 @@ export default function Header() {
         {user.username != null ? (
           <Fragment>
             <span className={styles.username}>@{user.username}</span>
+            <Link to={`/u/${user.username}`}>Profile</Link>
             <LogoutButton />
           </Fragment>
         ) : (

@@ -10,13 +10,29 @@ const usersController = {
     const decodedJwt = <any>jwt.verify(token!, process.env.JWT_SECRET!);
     const userId = decodedJwt.userId;
     try {
-      const user = await usersService.getUser(userId);
+      const user = await usersService.getUserById(userId);
       res.send({
         id: user.id,
         username: user.username,
       });
     } catch (e) {
       return res.send({ error: 'Incorrect token' });
+    }
+  },
+
+  getUser: async (req: express.Request, res: express.Response) => {
+    console.log('HI');
+    const username = req.query.username as string;
+    console.log(username);
+    try {
+      const user = await usersService.getUserByName(username);
+      res.send({
+        id: user.id,
+        username: user.username,
+        posts: user.posts,
+      });
+    } catch (e) {
+      return res.send({ error: 'User does not exist' });
     }
   },
 

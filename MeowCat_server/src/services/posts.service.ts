@@ -1,4 +1,4 @@
-import { getConnection } from 'typeorm';
+import { getConnection, SelectQueryBuilder } from 'typeorm';
 import Post from '../entity/Post';
 
 const postsService = {
@@ -6,6 +6,19 @@ const postsService = {
     const connection = getConnection();
     const postsRepository = connection.getRepository(Post);
     const posts = await postsRepository.find();
+    return posts;
+  },
+
+  getPostsByUser: async (username: string) => {
+    const connection = getConnection();
+    const postsRepository = connection.getRepository(Post);
+    console.log(username);
+    // const posts = await postsRepository.find({ where: { user: { username: username } } });
+    const posts = postsRepository
+      .createQueryBuilder('post')
+      .innerJoinAndSelect('post.user', 'user')
+      .where('user.username = :username', { username })
+      .getMany();
     return posts;
   },
 

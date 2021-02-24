@@ -10,6 +10,7 @@ import LoginPage from './components/LoginPage';
 import NewPost from './components/NewPost';
 import SignupPage from './components/SignupPage';
 import api from './api';
+import ProfilePage from './components/ProfilePage';
 
 function App() {
   const [username, setUsername] = useState<string | null>(null);
@@ -56,6 +57,9 @@ function App() {
             </Route>
             <Route path="/login">
               <LoginPage />
+            </Route>
+            <Route path="/u/:username">
+              <ProfilePage />
             </Route>
             <Route path="/">
               <Container>

@@ -4,8 +4,14 @@ import postsService from '../services/posts.service';
 
 const postsController = {
   getPosts: async (req: express.Request, res: express.Response) => {
-    const posts = await postsService.getPosts();
-    res.json(posts);
+    const username = req.query.username as string | undefined;
+    if (username != undefined) {
+      const posts = await postsService.getPostsByUser(username);
+      return res.json(posts);
+    } else {
+      const posts = await postsService.getPosts();
+      return res.json(posts);
+    }
   },
 
   addPost: async (req: express.Request, res: express.Response) => {

@@ -2,8 +2,9 @@ import Post from '../domain/Post';
 import User from '../domain/User';
 
 // TODO: Get this from the config
-const apiBaseUrl = 'http://localhost:8000';
+const apiBaseUrl = 'http://192.168.1.7:8000';
 
+// TODO: Refactor and split into separate files
 const api = {
   getMe: async (jwt: string) => {
     const url = new URL('/me', apiBaseUrl).href;
@@ -14,6 +15,21 @@ const api = {
     });
     if (response.status === 200) {
       const data = await response.json();
+      const id: number = data.id;
+      const username: string = data.username;
+      return { id: id, username: username };
+    } else {
+      throw new Error();
+    }
+  },
+
+  getUser: async (username: string) => {
+    const url = new URL('/user', apiBaseUrl);
+    url.searchParams.append('username', username);
+    const response = await fetch(url.href);
+    if (response.status === 200) {
+      const data = await response.json();
+      console.log(data);
       const id: number = data.id;
       const username: string = data.username;
       return { id: id, username: username };
@@ -67,6 +83,29 @@ const api = {
   getPosts: async () => {
     const url = new URL('/posts', apiBaseUrl).href;
     const response = await fetch(url);
+    if (response.status !== 200) {
+      throw new Error();
+    }
+    const data = (await response.json()) as any[];
+    const posts = data.map((d) => {
+      // TODO: There has to be a better way to do this.
+      const post = new Post();
+      post.id = d.id;
+      post.text = d.text;
+      const user = new User();
+      user.id = d.user.id;
+      user.username = d.user.username;
+      post.user = user;
+      post.createdAt = new Date(d.createdAt);
+      return post;
+    });
+    return posts;
+  },
+
+  getPostsByUser: async (username: string) => {
+    const url = new URL('/posts', apiBaseUrl);
+    url.searchParams.append('username', username);
+    const response = await fetch(url.href);
     if (response.status !== 200) {
       throw new Error();
     }
