@@ -40,6 +40,19 @@ const usersService = {
     const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET!);
     return token;
   },
+
+  updateUser: async (id: number, avatar: string) => {
+    const connection = getConnection();
+    const userRepository = connection.getRepository(User);
+    const user = await userRepository.findOne(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    user.avatar = avatar;
+    console.log(avatar);
+    console.log(user);
+    userRepository.save(user);
+  },
 };
 
 export default usersService;

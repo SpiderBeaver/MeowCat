@@ -23,6 +23,25 @@ const api = {
     }
   },
 
+  updateProfile: async (jwt: string, avatar: string) => {
+    const url = new URL('/user/update', apiBaseUrl).href;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${jwt}`,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        avatar: avatar,
+      }),
+    });
+    if (response.status === 200) {
+      return;
+    } else {
+      throw new Error();
+    }
+  },
+
   getUser: async (username: string) => {
     const url = new URL('/user', apiBaseUrl);
     url.searchParams.append('username', username);
@@ -32,7 +51,8 @@ const api = {
       console.log(data);
       const id: number = data.id;
       const username: string = data.username;
-      return { id: id, username: username };
+      const avatar: string | null = data.avatar;
+      return { id: id, username: username, avatar: avatar };
     } else {
       throw new Error();
     }
@@ -143,6 +163,11 @@ const api = {
     const data = await response.json();
     const newPostId = data.id;
     return newPostId;
+  },
+
+  imageFullUrl: (filename: string) => {
+    const url = new URL(`/uploads/images/${filename}`, apiBaseUrl);
+    return url.href;
   },
 };
 

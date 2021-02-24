@@ -13,6 +13,9 @@ export default class User {
   @Column()
   password!: string;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  avatar: string | null = null;
+
   @OneToMany(() => Post, (post) => post.user)
   posts!: Post[];
 }

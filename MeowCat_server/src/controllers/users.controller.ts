@@ -14,21 +14,37 @@ const usersController = {
       res.send({
         id: user.id,
         username: user.username,
+        avatar: user.avatar,
       });
     } catch (e) {
       return res.send({ error: 'Incorrect token' });
     }
   },
 
+  updateProfile: async (req: express.Request, res: express.Response) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    const { avatar }: { avatar: string } = req.body;
+    // TODO: Create a type for jwt data.
+    // TODO: Handle errors
+    const decodedJwt = <any>jwt.verify(token!, process.env.JWT_SECRET!);
+    const userId = decodedJwt.userId;
+    try {
+      await usersService.updateUser(userId, avatar);
+      return res.send({ ok: 'ok' });
+    } catch (e) {
+      // TODO: Meaningfull errors
+      return res.status(400).send({ error: 'Error' });
+    }
+  },
+
   getUser: async (req: express.Request, res: express.Response) => {
-    console.log('HI');
     const username = req.query.username as string;
-    console.log(username);
     try {
       const user = await usersService.getUserByName(username);
       res.send({
         id: user.id,
         username: user.username,
+        avatar: user.avatar,
         posts: user.posts,
       });
     } catch (e) {
