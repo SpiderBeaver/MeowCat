@@ -7,10 +7,12 @@ type PostListItemProps = {
 };
 
 export default function PostListItem({ post }: PostListItemProps) {
+  console.log(post.createdAt);
   return (
     <div className={styles.post}>
-      <div className={styles.heading}>
+      <div className={styles.header}>
         <span className={styles.username}>{post.user.username}</span>
+        <span className={styles.datetime}>{post.createdAt.toLocaleString()}</span>
       </div>
       <div className={styles.text}>{post.text}</div>
     </div>

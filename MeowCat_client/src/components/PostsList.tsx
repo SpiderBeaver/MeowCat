@@ -10,11 +10,13 @@ type PostsListProps = {
 export default function PostsList({ posts }: PostsListProps) {
   return (
     <ul className={styles.posts_list}>
-      {posts.map((post) => (
-        <li key={post.id}>
-          <PostListItem post={post} />
-        </li>
-      ))}
+      {posts
+        .sort((post1, post2) => post2.createdAt.getTime() - post1.createdAt.getTime())
+        .map((post) => (
+          <li key={post.id}>
+            <PostListItem post={post} />
+          </li>
+        ))}
     </ul>
   );
 }

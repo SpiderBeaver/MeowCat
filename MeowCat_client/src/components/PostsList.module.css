@@ -6,3 +6,7 @@
   list-style: none;
   overflow: hidden;
 }
+
+.header {
+  margin-bottom: 50px;
+}

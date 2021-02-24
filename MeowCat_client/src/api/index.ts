@@ -80,6 +80,7 @@ const api = {
       user.id = d.user.id;
       user.username = d.user.username;
       post.user = user;
+      post.createdAt = new Date(d.createdAt);
       return post;
     });
     return posts;

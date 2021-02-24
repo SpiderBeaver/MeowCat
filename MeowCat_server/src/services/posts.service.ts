@@ -12,7 +12,7 @@ const postsService = {
   addPost: async (userId: number, newPostText: string) => {
     const connection = getConnection();
     const postsRepository = connection.getRepository(Post);
-    const newPost = postsRepository.create({ text: newPostText, user: { id: userId } });
+    const newPost = postsRepository.create({ text: newPostText, user: { id: userId }, createdAt: new Date() });
     const result = await postsRepository.save(newPost);
     return result.id;
   },

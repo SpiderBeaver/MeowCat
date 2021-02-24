@@ -11,4 +11,7 @@ export default class Post {
 
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE', nullable: false, eager: true })
   user!: User;
+
+  @Column()
+  createdAt!: Date;
 }
