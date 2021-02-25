@@ -115,6 +115,7 @@ const api = {
       const user = new User();
       user.id = d.user.id;
       user.username = d.user.username;
+      user.avatar = d.user.avatar;
       post.user = user;
       post.createdAt = new Date(d.createdAt);
       return post;
@@ -138,6 +139,7 @@ const api = {
       const user = new User();
       user.id = d.user.id;
       user.username = d.user.username;
+      user.avatar = d.user.avatar;
       post.user = user;
       post.createdAt = new Date(d.createdAt);
       return post;

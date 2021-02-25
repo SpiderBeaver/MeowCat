@@ -1,0 +1,23 @@
+.avatar_img {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatar_placeholder {
+  background-color: #aaa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+}
+
+.medium {
+  width: 112px;
+  height: 112px;
+}
+
+.large {
+  width: 224px;
+  height: 224px;
+}

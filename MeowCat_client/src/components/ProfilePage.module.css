@@ -12,22 +12,6 @@
   margin-right: 30px;
 }
 
-.avatar_img {
-  width: 224px;
-  height: 224px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 12px;
-}
-
-.avatar_placeholder {
-  width: 224px;
-  height: 224px;
-  background-color: #aaa;
-  border-radius: 50%;
-  margin-bottom: 12px;
-}
-
 .profile_pic_upload_input {
   display: none;
 }

@@ -6,6 +6,7 @@ import User from '../domain/User';
 import Container from './Container';
 import Post from '../domain/Post';
 import PostsList from './PostsList';
+import Avatar, { AvatarType } from './Avatar';
 
 export default function ProfilePage() {
   const { username: initialUsername } = useParams() as { username: string };
@@ -68,11 +69,7 @@ export default function ProfilePage() {
     <Container>
       <div className={styles.profile}>
         <div className={styles.avatar}>
-          {avatar ? (
-            <img src={api.imageFullUrl(avatar)} alt="User's avatar" className={styles.avatar_img} />
-          ) : (
-            <div className={styles.avatar_placeholder}></div>
-          )}
+          <Avatar filename={avatar} type={AvatarType.Large} />
 
           <label className={styles.profile_pic_upload_button}>
             <input
