@@ -31,6 +31,8 @@ router.get('/users', usersController.getUsers);
 
 router.get('/posts', postsController.getPosts);
 router.post('/posts', postsController.addPost);
+router.post('/posts/addLike', postsController.addLike);
+router.post('/posts/removeLike', postsController.removeLike);
 
 router.get('/uploads/images/:filename', imagesController.getImage);
 router.post('/uploads/images', upload.single('image'), imagesController.upload);

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import User from './User';
 
 @Entity()
@@ -14,4 +14,8 @@ export default class Post {
 
   @Column()
   createdAt!: Date;
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  likes!: User[];
 }

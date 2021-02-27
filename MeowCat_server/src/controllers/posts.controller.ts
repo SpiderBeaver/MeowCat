@@ -1,5 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import PostDto from '../dto/post.dto';
+import Post from '../entity/Post';
 import postsService from '../services/posts.service';
 
 const postsController = {
@@ -7,10 +9,12 @@ const postsController = {
     const username = req.query.username as string | undefined;
     if (username != undefined) {
       const posts = await postsService.getPostsByUser(username);
-      return res.json(posts);
+      const postsDto = posts.map(postToDto);
+      return res.json(postsDto);
     } else {
       const posts = await postsService.getPosts();
-      return res.json(posts);
+      const postsDto = posts.map(postToDto);
+      return res.json(postsDto);
     }
   },
 
@@ -26,6 +30,48 @@ const postsController = {
       return res.status(400).send();
     }
   },
+
+  addLike: async (req: express.Request, res: express.Response) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      const tokenData = <any>jwt.verify(token!, process.env.JWT_SECRET!);
+      const userId = tokenData.userId;
+      const postId = req.body.postId;
+      await postsService.addLike(postId, userId);
+      res.send({ ok: 'ok' });
+    } catch (e) {
+      return res.status(400).send();
+    }
+  },
+
+  removeLike: async (req: express.Request, res: express.Response) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      const tokenData = <any>jwt.verify(token!, process.env.JWT_SECRET!);
+      const userId = tokenData.userId;
+      const postId = req.body.postId;
+      await postsService.removeLike(postId, userId);
+      res.send({ ok: 'ok' });
+    } catch (e) {
+      return res.status(400).send();
+    }
+  },
 };
+
+function postToDto(post: Post) {
+  return <PostDto>{
+    id: post.id,
+    text: post.text,
+    user: {
+      id: post.user.id,
+      username: post.user.username,
+      avatar: post.user.avatar,
+    },
+    createdAt: post.createdAt,
+    likes: post.likes.length,
+    // TODO: Set the correct value
+    likedByMe: false,
+  };
+}
 
 export default postsController;

@@ -1,4 +1,4 @@
-export default interface Post {
+export default interface PostDto {
   id: number;
   text: string;
   user: {

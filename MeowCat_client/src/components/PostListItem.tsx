@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './PostListItem.module.css';
 import Post from '../domain/Post';
-import api from '../api';
 import Avatar from './Avatar';
+import { ReactComponent as HeartIcon } from '../../node_modules/@fortawesome/fontawesome-free/svgs/regular/heart.svg';
 
 type PostListItemProps = {
   post: Post;
@@ -21,6 +21,11 @@ export default function PostListItem({ post }: PostListItemProps) {
         <span className={styles.datetime}>{post.createdAt.toLocaleString()}</span>
       </div>
       <div className={styles.text}>{post.text}</div>
+
+      <span className={styles.like}>
+        <HeartIcon className={styles.like_icon}></HeartIcon>
+        <span className={styles.like_count}>{post.likes}</span>
+      </span>
     </div>
   );
 }

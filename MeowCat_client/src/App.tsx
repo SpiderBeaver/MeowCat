@@ -13,6 +13,7 @@ import api from './api';
 import ProfilePage from './components/ProfilePage';
 
 function App() {
+  const [userId, setUserId] = useState<number | null>(null);
   const [username, setUsername] = useState<string | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
 
@@ -23,6 +24,7 @@ function App() {
         return;
       }
       const meData = await api.getMe(jwt);
+      setUserId(meData.id);
       setUsername(meData.username);
     };
     fetchMe();
@@ -40,8 +42,10 @@ function App() {
     <div className="App">
       <UserContext.Provider
         value={{
+          id: userId,
           username: username,
-          login: (username) => {
+          login: (id, username) => {
+            setUserId(id);
             setUsername(username);
           },
           logout: () => {

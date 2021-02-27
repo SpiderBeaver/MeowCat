@@ -17,7 +17,8 @@ export default function LoginForm() {
     try {
       const jwt = await api.login(username, password);
       localStorage.setItem('jwt', jwt);
-      userContext.login(username);
+      // TODO: Fix id
+      userContext.login(0, username);
       history.push('/');
     } catch (e) {
       console.log('Error logging in.');

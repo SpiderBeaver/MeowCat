@@ -8,6 +8,7 @@ type PostsListProps = {
 };
 
 export default function PostsList({ posts }: PostsListProps) {
+  console.log(posts);
   return (
     <ul className={styles.posts_list}>
       {posts

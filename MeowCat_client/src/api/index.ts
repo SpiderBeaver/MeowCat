@@ -107,19 +107,22 @@ const api = {
       throw new Error();
     }
     const data = (await response.json()) as any[];
-    const posts = data.map((d) => {
-      // TODO: There has to be a better way to do this.
-      const post = new Post();
-      post.id = d.id;
-      post.text = d.text;
-      const user = new User();
-      user.id = d.user.id;
-      user.username = d.user.username;
-      user.avatar = d.user.avatar;
-      post.user = user;
-      post.createdAt = new Date(d.createdAt);
-      return post;
-    });
+    const posts = data.map(
+      (d): Post => {
+        return {
+          id: d.id,
+          text: d.text,
+          createdAt: new Date(d.createdAt),
+          user: {
+            id: d.user.id,
+            avatar: d.user.avatar,
+            username: d.user.username,
+          },
+          likes: d.likes,
+          likedByMe: d.likedByMe,
+        };
+      }
+    );
     return posts;
   },
 
@@ -131,19 +134,22 @@ const api = {
       throw new Error();
     }
     const data = (await response.json()) as any[];
-    const posts = data.map((d) => {
-      // TODO: There has to be a better way to do this.
-      const post = new Post();
-      post.id = d.id;
-      post.text = d.text;
-      const user = new User();
-      user.id = d.user.id;
-      user.username = d.user.username;
-      user.avatar = d.user.avatar;
-      post.user = user;
-      post.createdAt = new Date(d.createdAt);
-      return post;
-    });
+    const posts = data.map(
+      (d): Post => {
+        return {
+          id: d.id,
+          text: d.text,
+          createdAt: new Date(d.createdAt),
+          user: {
+            id: d.user.id,
+            avatar: d.user.avatar,
+            username: d.user.username,
+          },
+          likes: d.likes,
+          likedByMe: d.likedByMe,
+        };
+      }
+    );
     return posts;
   },
 
