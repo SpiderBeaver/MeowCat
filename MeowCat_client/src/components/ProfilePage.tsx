@@ -11,9 +11,10 @@ import Avatar, { AvatarType } from './Avatar';
 export default function ProfilePage() {
   const { username: initialUsername } = useParams() as { username: string };
 
-  const [username, setUsername] = useState<string | null>(initialUsername);
+  const [username, setUsername] = useState<string>(initialUsername);
   const [avatar, setAvatar] = useState<string | null>(null);
 
+  // TODO: We only need posts count.
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
@@ -88,7 +89,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <PostsList posts={posts} />
+      <PostsList username={username} />
     </Container>
   );
 }
