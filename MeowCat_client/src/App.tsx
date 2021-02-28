@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import UserContext from './context/UserContext';
+import { CurrentUserProvider } from './context/current-user.context';
 import Post from './domain/Post';
 import Header from './components/Header';
 import PostsList from './components/PostsList';
@@ -13,22 +13,7 @@ import api from './api';
 import ProfilePage from './components/ProfilePage';
 
 function App() {
-  const [userId, setUserId] = useState<number | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
-
-  useEffect(() => {
-    const fetchMe = async () => {
-      const jwt = localStorage.getItem('jwt');
-      if (jwt == null) {
-        return;
-      }
-      const meData = await api.getMe(jwt);
-      setUserId(meData.id);
-      setUsername(meData.username);
-    };
-    fetchMe();
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,19 +25,7 @@ function App() {
 
   return (
     <div className="App">
-      <UserContext.Provider
-        value={{
-          id: userId,
-          username: username,
-          login: (id, username) => {
-            setUserId(id);
-            setUsername(username);
-          },
-          logout: () => {
-            setUsername(null);
-          },
-        }}
-      >
+      <CurrentUserProvider>
         <Router>
           <Header />
           <Switch>
@@ -67,13 +40,13 @@ function App() {
             </Route>
             <Route path="/">
               <Container>
-                {username != null ? <NewPost /> : ''}
+                <NewPost />
                 <PostsList posts={posts} />
               </Container>
             </Route>
           </Switch>
         </Router>
-      </UserContext.Provider>
+      </CurrentUserProvider>
     </div>
   );
 }

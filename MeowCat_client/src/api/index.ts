@@ -1,5 +1,4 @@
 import Post from '../domain/Post';
-import User from '../domain/User';
 
 // TODO: Get this from the config
 const apiBaseUrl = 'http://192.168.1.7:8000';

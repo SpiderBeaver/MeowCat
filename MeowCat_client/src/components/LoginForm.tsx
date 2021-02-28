@@ -1,11 +1,11 @@
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import api from '../api';
-import UserContext from '../context/UserContext';
+import { useCurrentUser } from '../context/current-user.context';
 import styles from './LoginForm.module.css';
 
 export default function LoginForm() {
-  const userContext = useContext(UserContext);
+  const [, setCurrentUser] = useCurrentUser();
   const history = useHistory();
 
   const [username, setUsername] = useState('');
@@ -18,7 +18,7 @@ export default function LoginForm() {
       const jwt = await api.login(username, password);
       localStorage.setItem('jwt', jwt);
       // TODO: Fix id
-      userContext.login(0, username);
+      setCurrentUser({ id: 0, username: username });
       history.push('/');
     } catch (e) {
       console.log('Error logging in.');

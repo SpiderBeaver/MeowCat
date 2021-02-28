@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
-import UserContext from '../context/UserContext';
+import React from 'react';
+import { useCurrentUser } from '../context/current-user.context';
 import styles from './LogoutButton.module.css';
 
 export default function LogoutButton() {
-  const userContext = useContext(UserContext);
+  const [, setCurrentUser] = useCurrentUser();
 
   const handleClick = () => {
-    userContext.logout();
+    setCurrentUser(null);
     localStorage.removeItem('jwt');
   };
 
