@@ -6,14 +6,17 @@ import postsService from '../services/posts.service';
 
 const postsController = {
   getPosts: async (req: express.Request, res: express.Response) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    const tokenData = token ? <any>jwt.verify(token, process.env.JWT_SECRET!) : null;
+    const userId = tokenData?.userId;
     const username = req.query.username as string | undefined;
     if (username != undefined) {
       const posts = await postsService.getPostsByUser(username);
-      const postsDto = posts.map(postToDto);
+      const postsDto = posts.map((p) => postToDto(p, userId));
       return res.json(postsDto);
     } else {
       const posts = await postsService.getPosts();
-      const postsDto = posts.map(postToDto);
+      const postsDto = posts.map((p) => postToDto(p, userId));
       return res.json(postsDto);
     }
   },
@@ -58,7 +61,7 @@ const postsController = {
   },
 };
 
-function postToDto(post: Post) {
+function postToDto(post: Post, userId?: number) {
   return <PostDto>{
     id: post.id,
     text: post.text,
@@ -69,8 +72,7 @@ function postToDto(post: Post) {
     },
     createdAt: post.createdAt,
     likes: post.likes.length,
-    // TODO: Set the correct value
-    likedByMe: false,
+    likedByMe: post.likes.some((u) => u.id === userId),
   };
 }
 

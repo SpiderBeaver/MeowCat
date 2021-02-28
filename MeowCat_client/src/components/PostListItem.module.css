@@ -37,6 +37,10 @@
   cursor: pointer;
 }
 
+.like_activated {
+  color: #c97b84;
+}
+
 .like_icon {
   width: 14px;
   fill: #ffffff;

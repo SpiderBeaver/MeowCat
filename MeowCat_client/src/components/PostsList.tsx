@@ -14,11 +14,40 @@ export default function PostsList({ username }: PostsListProps) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const posts = username ? await api.getPostsByUser(username) : await api.getPosts();
+      const jwt = localStorage.getItem('jwt');
+      const posts = username ? await api.getPostsByUser(username) : await api.getPosts(jwt ?? undefined);
+      console.log(posts);
       setPosts(posts);
     };
     fetchData();
   }, [username]);
+
+  const handlePostLike = async (postId: number) => {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      return;
+    }
+
+    let post = posts.find((p) => p.id === postId);
+    if (!post) {
+      return;
+    }
+
+    let newPost = { ...post } as Post;
+    if (!newPost.likedByMe) {
+      await api.addLike(jwt, newPost.id);
+      newPost.likedByMe = true;
+      newPost.likes += 1;
+    } else {
+      await api.removeLike(jwt, newPost.id);
+      newPost.likedByMe = false;
+      newPost.likes -= 1;
+    }
+
+    let newPosts = [...posts.filter((p) => p !== post), newPost];
+
+    setPosts(newPosts);
+  };
 
   return (
     <ul className={styles.posts_list}>
@@ -26,7 +55,7 @@ export default function PostsList({ username }: PostsListProps) {
         .sort((post1, post2) => post2.createdAt.getTime() - post1.createdAt.getTime())
         .map((post) => (
           <li key={post.id}>
-            <PostListItem post={post} />
+            <PostListItem post={post} onPostLike={handlePostLike} />
           </li>
         ))}
     </ul>

@@ -99,9 +99,15 @@ const api = {
     }
   },
 
-  getPosts: async () => {
+  getPosts: async (jwt?: string) => {
     const url = new URL('/posts', apiBaseUrl).href;
-    const response = await fetch(url);
+    const response = jwt
+      ? await fetch(url, {
+          headers: new Headers({
+            Authorization: `Bearer ${jwt}`,
+          }),
+        })
+      : await fetch(url);
     if (response.status !== 200) {
       throw new Error();
     }
@@ -170,6 +176,40 @@ const api = {
     const data = await response.json();
     const newPostId = data.id;
     return newPostId;
+  },
+
+  addLike: async (jwt: string, postId: number) => {
+    const url = new URL('/posts/addLike', apiBaseUrl).href;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        postId: postId,
+      }),
+    });
+    if (response.status !== 200) {
+      throw new Error();
+    }
+  },
+
+  removeLike: async (jwt: string, postId: number) => {
+    const url = new URL('/posts/removeLike', apiBaseUrl).href;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        postId: postId,
+      }),
+    });
+    if (response.status !== 200) {
+      throw new Error();
+    }
   },
 
   imageFullUrl: (filename: string) => {
