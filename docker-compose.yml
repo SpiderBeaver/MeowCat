@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  server:
+    image: meowcat
+    ports:
+      - 8000:8000
+    environment:
+      TYPEORM_HOST: db
+      TYPEORM_DATABASE: meowcat
+      TYPEORM_USERNAME: root
+      TYPEORM_PASSWORD: root_password
+
+    depends_on:
+      - db
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: meowcat
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password

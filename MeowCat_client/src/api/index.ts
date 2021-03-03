@@ -1,12 +1,11 @@
 import Post from '../domain/Post';
 
-// TODO: Get this from the config
-const apiBaseUrl = 'http://192.168.1.7:8000';
+const apiBaseUrl = process.env.REACT_APP_API_URL ?? `${window.location.origin}/api/`;
 
 // TODO: Refactor and split into separate files
 const api = {
   getMe: async (jwt: string) => {
-    const url = new URL('/me', apiBaseUrl).href;
+    const url = new URL('./me', apiBaseUrl).href;
     const response = await fetch(url, {
       headers: new Headers({
         Authorization: `Bearer ${jwt}`,
@@ -23,7 +22,7 @@ const api = {
   },
 
   updateProfile: async (jwt: string, avatar: string) => {
-    const url = new URL('/user/update', apiBaseUrl).href;
+    const url = new URL('./user/update', apiBaseUrl).href;
     const response = await fetch(url, {
       method: 'POST',
       headers: new Headers({
@@ -42,7 +41,7 @@ const api = {
   },
 
   getUser: async (username: string) => {
-    const url = new URL('/user', apiBaseUrl);
+    const url = new URL('./user', apiBaseUrl);
     url.searchParams.append('username', username);
     const response = await fetch(url.href);
     if (response.status === 200) {
@@ -58,7 +57,7 @@ const api = {
   },
 
   login: async (username: string, password: string) => {
-    const url = new URL('/login', apiBaseUrl).href;
+    const url = new URL('./login', apiBaseUrl).href;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -79,7 +78,7 @@ const api = {
   },
 
   signup: async (username: string, password: string) => {
-    const url = new URL('/signup', apiBaseUrl).href;
+    const url = new URL('./signup', apiBaseUrl).href;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -100,7 +99,7 @@ const api = {
   },
 
   getPosts: async (jwt?: string) => {
-    const url = new URL('/posts', apiBaseUrl).href;
+    const url = new URL('./posts', apiBaseUrl).href;
     const response = jwt
       ? await fetch(url, {
           headers: new Headers({
@@ -132,7 +131,7 @@ const api = {
   },
 
   getPostsByUser: async (username: string) => {
-    const url = new URL('/posts', apiBaseUrl);
+    const url = new URL('./posts', apiBaseUrl);
     url.searchParams.append('username', username);
     const response = await fetch(url.href);
     if (response.status !== 200) {
@@ -159,7 +158,7 @@ const api = {
   },
 
   addPost: async (jwt: string, text: string) => {
-    const url = new URL('/posts', apiBaseUrl).href;
+    const url = new URL('./posts', apiBaseUrl).href;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -179,7 +178,7 @@ const api = {
   },
 
   addLike: async (jwt: string, postId: number) => {
-    const url = new URL('/posts/addLike', apiBaseUrl).href;
+    const url = new URL('./posts/addLike', apiBaseUrl).href;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -196,7 +195,7 @@ const api = {
   },
 
   removeLike: async (jwt: string, postId: number) => {
-    const url = new URL('/posts/removeLike', apiBaseUrl).href;
+    const url = new URL('./posts/removeLike', apiBaseUrl).href;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -213,7 +212,7 @@ const api = {
   },
 
   imageFullUrl: (filename: string) => {
-    const url = new URL(`/uploads/images/${filename}`, apiBaseUrl);
+    const url = new URL(`./uploads/images/${filename}`, apiBaseUrl);
     return url.href;
   },
 };

@@ -7,6 +7,7 @@ const imagesController = {
   },
 
   getImage: async (req: express.Request, res: express.Response) => {
+    // TODO: Create folder if does not exist.
     const filename = req.params.filename;
     const imagePath = path.join(__dirname, '../uploads/images', filename);
     res.sendFile(imagePath);

@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 // TODO: Think about a default .env file to commit to the repo.
@@ -16,6 +17,12 @@ dotenv.config();
 const main = async () => {
   await createConnection();
   app.use(router);
+
+  // TODO: if NOVE_ENV == production
+  app.use(express.static(path.resolve(__dirname, 'client')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'index.html'));
+  });
 
   app.listen(8000, () => {
     console.log('Server started');
