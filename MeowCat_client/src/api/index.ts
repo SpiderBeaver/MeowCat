@@ -211,6 +211,25 @@ const api = {
     }
   },
 
+  uploadImage: async (file: File) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const url = new URL('./uploads/images', apiBaseUrl).href;
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.status !== 200) {
+      throw new Error();
+    }
+
+    const responseData = await response.json();
+    const uploadedFilename = responseData.filename as string;
+    return uploadedFilename;
+  },
+
   imageFullUrl: (filename: string) => {
     const url = new URL(`./uploads/images/${filename}`, apiBaseUrl);
     return url.href;

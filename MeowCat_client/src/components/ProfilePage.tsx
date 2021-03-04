@@ -50,19 +50,9 @@ export default function ProfilePage() {
 
     const file = event.target.files?.[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('image', file);
-
-      const uploadResponse = await fetch('http://192.168.1.7:8000/uploads/images', {
-        method: 'POST',
-        body: formData,
-      });
-      if (uploadResponse.status === 200) {
-        const uploadResponseData = await uploadResponse.json();
-        const uploadedFilename = uploadResponseData.filename as string;
-        await api.updateProfile(jwt, uploadedFilename);
-        setAvatar(uploadedFilename);
-      }
+      const filename = await api.uploadImage(file);
+      await api.updateProfile(jwt, filename);
+      setAvatar(filename);
     }
   };
 
