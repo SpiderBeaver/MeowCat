@@ -1,6 +1,7 @@
 import { getConnection } from 'typeorm';
 import jwt from 'jsonwebtoken';
 import User from '../entity/User';
+import bcrypt from 'bcrypt';
 
 const usersService = {
   getUserById: async (userId: number) => {
@@ -35,7 +36,8 @@ const usersService = {
     // TODO: Check if user already exisits
     const userRepository = connection.getRepository(User);
     // TODO: Username should be letters/numbers only. No spaces.
-    const newUserData = userRepository.create({ username: username, password: password });
+    const passwordHash = await bcrypt.hash(password, 10);
+    const newUserData = userRepository.create({ username: username, passwordHash: passwordHash });
     const newUser = await userRepository.save(newUserData);
     const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET!);
     return token;

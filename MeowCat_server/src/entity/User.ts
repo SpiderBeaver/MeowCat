@@ -9,9 +9,8 @@ export default class User {
   @Column()
   username!: string;
 
-  //TODO: Salt passwords
   @Column()
-  password!: string;
+  passwordHash!: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   avatar: string | null = null;
