@@ -2,11 +2,11 @@ version: '3'
 
 services:
   client:
-    image: meowcat-client
+    image: spdrbeaver/meowcat-client
     ports:
       - 8001:80
   server:
-    image: meowcat-server
+    image: spdrbeaver/meowcat-server
     ports:
       - 8000:8000
     environment:
