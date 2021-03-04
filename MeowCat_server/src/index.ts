@@ -15,14 +15,18 @@ app.use(corsMiddleware);
 dotenv.config();
 
 const main = async () => {
-  await createConnection();
-  app.use(router);
+  while (true) {
+    try {
+      await createConnection();
+      break;
+    } catch (e) {
+      // Wait for a second before the next attempt
+      console.log('Error connecting to a database. Retrying in 1 second.');
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  }
 
-  // TODO: if NOVE_ENV == production
-  app.use(express.static(path.resolve(__dirname, 'client')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'index.html'));
-  });
+  app.use(router);
 
   app.listen(8000, () => {
     console.log('Server started');
