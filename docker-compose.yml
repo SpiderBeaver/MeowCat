@@ -1,8 +1,12 @@
 version: '3'
 
 services:
+  client:
+    image: meowcat-client
+    ports:
+      - 8001:80
   server:
-    image: meowcat
+    image: meowcat-server
     ports:
       - 8000:8000
     environment:
@@ -10,7 +14,6 @@ services:
       TYPEORM_DATABASE: meowcat
       TYPEORM_USERNAME: root
       TYPEORM_PASSWORD: root_password
-
     depends_on:
       - db
   db:
