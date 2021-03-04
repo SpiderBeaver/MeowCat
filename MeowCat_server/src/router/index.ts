@@ -6,6 +6,12 @@ import postsController from '../controllers/posts.controller';
 import imagesController from '../controllers/images.controller';
 import crypro from 'crypto';
 import path from 'path';
+import fs from 'fs';
+
+const uploadedImagesPath = path.join(__dirname, '../uploads/images/');
+if (!fs.existsSync(uploadedImagesPath)) {
+  fs.mkdirSync(uploadedImagesPath, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
