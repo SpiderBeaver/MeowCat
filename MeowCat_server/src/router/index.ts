@@ -27,7 +27,7 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-router.post('/signup', authController.signup);
+router.post('/signup', authController.signupValidate(), authController.signup);
 router.post('/login', authController.login);
 
 router.get('/me', usersController.getMe);

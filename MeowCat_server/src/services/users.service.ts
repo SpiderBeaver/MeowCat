@@ -33,9 +33,13 @@ const usersService = {
 
   addUser: async (username: string, password: string) => {
     const connection = getConnection();
-    // TODO: Check if user already exisits
     const userRepository = connection.getRepository(User);
-    // TODO: Username should be letters/numbers only. No spaces.
+
+    const existingUser = await userRepository.findOne({ where: { username: username } });
+    if (existingUser) {
+      throw new Error('User already exists.');
+    }
+
     const passwordHash = await bcrypt.hash(password, 10);
     const newUserData = userRepository.create({ username: username, passwordHash: passwordHash });
     const newUser = await userRepository.save(newUserData);

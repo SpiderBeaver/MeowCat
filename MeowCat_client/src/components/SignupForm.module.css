@@ -50,3 +50,7 @@
   font-weight: 500;
   cursor: pointer;
 }
+
+.error {
+  color: #af1b3f;
+}

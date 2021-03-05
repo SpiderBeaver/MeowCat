@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import api from '../api';
+import api, { ValidationError } from '../api';
 import { useCurrentUser } from '../context/current-user.context';
 import styles from './SignupForm.module.css';
 
@@ -8,11 +8,22 @@ export default function SignupForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [error, setError] = useState('');
+
   const [, setCurrentUser] = useCurrentUser();
   const history = useHistory();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+
+    if (username.trim() === '') {
+      setError('Please enter username.');
+      return;
+    }
+    if (password.trim() === '') {
+      setError('Please enter password.');
+      return;
+    }
 
     try {
       const jwt = await api.signup(username, password);
@@ -21,7 +32,13 @@ export default function SignupForm() {
       setCurrentUser({ id: 0, username: username });
       history.push('/');
     } catch (e) {
-      console.log('Error logging in.');
+      if (e instanceof ValidationError) {
+        setError(e.message);
+      } else if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        console.log('Unespected error');
+      }
     }
   };
 
@@ -32,15 +49,16 @@ export default function SignupForm() {
         placeholder="Username"
         className={styles.textbox}
         value={username}
-        onChange={(event) => setUsername(event.target.value)}
+        onChange={(event) => setUsername(event.target.value.trim())}
       ></input>
       <input
         type="text"
         placeholder="Password"
         className={styles.textbox}
         value={password}
-        onChange={(event) => setPassword(event.target.value)}
+        onChange={(event) => setPassword(event.target.value.trim())}
       ></input>
+      <p className={styles.error}>{error}</p>
       <div className={styles.controls}>
         <Link to="/login" className={styles.link}>
           I already have an account

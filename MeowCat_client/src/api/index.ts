@@ -94,7 +94,13 @@ const api = {
       const jwt = data.token;
       return jwt;
     } else {
-      throw new Error();
+      const data = await response.json();
+      if (data.validationErrors) {
+        // Just throw the first error for now
+        throw new ValidationError(data.validationErrors[0].msg);
+      } else if (data.error) {
+        throw new Error(data.error);
+      }
     }
   },
 
@@ -235,5 +241,7 @@ const api = {
     return url.href;
   },
 };
+
+export class ValidationError extends Error {}
 
 export default api;
